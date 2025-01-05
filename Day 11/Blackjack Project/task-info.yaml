@@ -1,15 +1,12 @@
 type: theory
 files:
-  - name: main.py
-    visible: true
-    learner_created: false
   - name: art.py
     visible: true
     learner_created: false
   - name: solution.py
     visible: true
     learner_created: false
-  - name: blackjack.py
+  - name: main_blackjack.py
     visible: true
     learner_created: true
 status: Solved
