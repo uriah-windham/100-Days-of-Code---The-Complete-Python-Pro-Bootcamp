@@ -47,14 +47,13 @@ while game_continues:
 
     result = (check_user_answer(option_a, option_b, answer, user_guess))
 
+    print("\n" * 100)
+    print(art.logo)
+
     if result:
-        print("\n" * 100)
-        print(art.logo)
         score += 1
         print(f"You're right! Current Score: {score}.")
         option_a = option_b
     else:
-        print("\n" * 100)
-        print(art.logo)
         print(f"Sorry, that's wrong. Final Score: {score}.")
         game_continues = False
