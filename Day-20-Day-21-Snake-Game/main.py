@@ -1,7 +1,4 @@
-import os
-import sys
 import time
-from pickle import GLOBAL
 from turtle import Screen
 from game_border import GameBorder
 from snake import Snake
