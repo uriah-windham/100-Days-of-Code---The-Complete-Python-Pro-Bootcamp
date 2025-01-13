@@ -27,3 +27,8 @@ class Scoreboard(Turtle):
     def close_game(self):
         self.game_is_over = True
         self.game_is_on = False
+
+    def play_again(self):
+        self.game_is_on = True
+        self.game_is_over = False
+
