@@ -18,7 +18,7 @@ root.deiconify()  # Ensure the window is not minimized
 ############################################################
 
 def main():
-    screen.setup(width=600, height=600, startx=0, starty=0)
+    screen.setup(width=600, height=600)
     screen.tracer(0)
     player = Player()
     scoreboard = Scoreboard()
@@ -27,7 +27,6 @@ def main():
 
     screen.listen()
     screen.onkeypress(scoreboard.close_game, "Escape")
-    screen.onkeypress(scoreboard.play_again, "space")
     screen.onkeypress(player.move_up, "Up")
 
     for car in cars:
@@ -43,7 +42,7 @@ def main():
                 car.move_left()
                 if int(car.distance(player)) < 20:
                     print("Game Over")
-                    scoreboard.game_is_over = True
+                    scoreboard.game_over()
 
             if player.ycor() >= FINISH_LINE_Y:
                 player.goto(STARTING_POSITION)
