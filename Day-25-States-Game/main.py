@@ -11,7 +11,6 @@ fill_state.speed("fastest")
 fill_state.hideturtle()
 
 correct_answers = []
-missing_answers = []
 
 x = 0
 y = 0
@@ -44,8 +43,7 @@ while game_on:
         game_on = False
         screen.bye()
 
-for key, val in states_dict["state"].items():
-    if val not in correct_answers:
-        missing_answers.append(val)
+
+missing_answers = [val for key, val in states_dict["state"].items() if val not in correct_answers]
 
 pandas.Series(missing_answers).to_csv("./missing_states.csv")
