@@ -1,30 +1,65 @@
 from tkinter import *
 from tkinter import messagebox
 import pyperclip
+import json
 import password_generator
+
+# ---------------------------- SEARCH FOR PASSWORD ------------------------------ #
+def search_password():
+    password_saved = False
+    try:
+        with open("./data.json", "r") as data_file:
+            data_dict = json.load(data_file)
+            for data in data_dict:
+                if website_entry.get() == data:
+                    messagebox.showinfo(title=data, message=f"Email: {data_dict[data]["email"]}\nPassword: {data_dict[data]["password"]}")
+                    password_saved = True
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No data file found")
+    else:
+        if not password_saved:
+                messagebox.showinfo(title="Password", message=f"No password saved for {website_entry.get()}")
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def make_password():
-    new_password = password_generator.main()
-    password_entry.delete(0, END)
-    password_entry.insert(END, new_password)
-    pyperclip.copy(new_password)
-    messagebox.showinfo(title="Password Generator", message="New password copied to clipboard.")
+        new_password = password_generator.main()
+        password_entry.delete(0, END)
+        password_entry.insert(END, new_password)
+        pyperclip.copy(new_password)
+        messagebox.showinfo(title="Password Generator", message="New password copied to clipboard.")
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    new_data = {
+        website: {
+                "email": email,
+                "password": password,
+            }
+    }
 
     if len(website) == 0 or len(password) == 0 or len(email) == 0:
         messagebox.showwarning(title="Empty Boxes", message="Please don't leave any of the fields empty!")
     else:
-        is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email} \nPassword: {password} \nIs it okay to save?")
+        is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email} \nPassword: {password} \nDo you want to save?")
 
         if is_ok:
-            with open("./data.txt", "a") as data:
-                data.write(f"{website} | {email} | {password}\n")
+            try:
+                with open("./data.json", "r") as data_file:
+                    #Read the old data
+                    data = json.load(data_file)
+                    #Update the old data with the new data
+                    data.update(new_data)
+            except (FileNotFoundError, json.decoder.JSONDecodeError):
+                with open("./data.json", "w") as data_file:
+                    #Create new file with new data
+                    json.dump(new_data, data_file, indent=4)
+            else:
+                with open("./data.json", "w") as data_file:
+                    json.dump(data, data_file, indent=4)
+
                 website_entry.delete(0, END)
                 password_entry.delete(0, END)
 
@@ -50,9 +85,9 @@ password_label = Label(text="Password:")
 password_label.grid(column=0, row=3)
 
 #Entries
-website_entry = Entry(width=50)
+website_entry = Entry(width=32)
 website_entry.focus()
-website_entry.grid(column=1, row=1, columnspan=2)
+website_entry.grid(column=1, row=1)
 
 email_entry = Entry(width=50)
 email_entry.insert(END, "uriah@email.com")
@@ -67,5 +102,8 @@ generate_password.grid(column=2, row=3)
 
 add_button = Button(text="Add", width=44, command=save)
 add_button.grid(column=1, row=4, columnspan=2)
+
+search_button = Button(text="Search", width=14, command=search_password)
+search_button.grid(column=2, row=1)
 
 window.mainloop()
