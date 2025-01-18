@@ -6,19 +6,17 @@ import password_generator
 
 # ---------------------------- SEARCH FOR PASSWORD ------------------------------ #
 def search_password():
-    password_saved = False
     try:
         with open("./data.json", "r") as data_file:
+            website = website_entry.get().title()
             data_dict = json.load(data_file)
-            for data in data_dict:
-                if website_entry.get() == data:
-                    messagebox.showinfo(title=data, message=f"Email: {data_dict[data]["email"]}\nPassword: {data_dict[data]["password"]}")
-                    password_saved = True
+            if website in data_dict:
+                messagebox.showinfo(title=website, message=f"Email: {data_dict[website]["email"]}\nPassword: {data_dict[website]["password"]}")
+            else:
+                messagebox.showinfo(title="Password", message=f"No password saved for {website}")
     except FileNotFoundError:
         messagebox.showinfo(title="Error", message="No data file found")
-    else:
-        if not password_saved:
-                messagebox.showinfo(title="Password", message=f"No password saved for {website_entry.get()}")
+
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def make_password():
@@ -30,7 +28,7 @@ def make_password():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
-    website = website_entry.get()
+    website = website_entry.get().title()
     email = email_entry.get()
     password = password_entry.get()
     new_data = {
