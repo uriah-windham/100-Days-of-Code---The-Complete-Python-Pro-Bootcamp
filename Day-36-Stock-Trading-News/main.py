@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
-STOCKS_API = "BA1FOT5RAQ6UGCKH"
-NEWS_API = "1288f1d82d794e9c97cfc6ef0368113a"
+STOCKS_API = ""
+NEWS_API = ""
 weekdays = [0, 1, 2, 3, 4]
 
 parameters = {
